@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+  <%- include("./partial/head.ejs")%>
+  <body>
+    <!-- <%- include("./partial/nav.ejs")%> -->
+    <nav  class="navbar navbar-expand-lg  nav-color ">
+      <div class="container-fluid">
+        <a class="navbar-brand text-info" href="#">BlogVerse </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+           <div class="d-flex flex-column">
+  
+             <form class="d-flex search " autocomplete="off" id="search-form" action="" role="search">
+               <input id="search" class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+               <button id="search-btn" class="btn btn-outline-success text-light" type="submit">Search</button>
+             </form>
+             <div id="autocomplete" class=" autocomplete ">
+             
+             </div>
+           </div>
+           
+          
+           
+          </ul>
+            <%if(!name){%>
+            <div id="nav-dropdown" class="dropdown bg-transparent">
+              <button id="nav-dropdown-button" class="btn text-white dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Login
+              </button>
+              <ul id="nav-ul" style=" width: 2rem;margin-right: 5rem;" class="dropdown-menu">
+                <li ><a class="" href="/signup">sign up</a></li>
+                <li ><a class="" href="/signin">sign in</a></li>
+              </ul>
+            </div>
+
+            <%} else{%>
+              <div id="nav-dropdown" class="dropdown bg-transparent">
+                <button id="nav-dropdown-button" class="btn text-white dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                 <%=name%>
+                </button>
+                <ul id="nav-ul" style=" width: 2rem;margin-right: 5rem;" class="dropdown-menu">
+                  <li ><a class="" href="/logout">logout</a></li>
+                 
+                </ul>
+              </div>
+              <%} %>
+        </div>
+      </div>
+    </nav>
+    
+    
+    <%for(blog of blogs){%>
+      <a  href="/<%=blog.title%>"> 
+      <div class=" d-flex  mt-4  mx-auto align-items-center px-5" style="width: 80rem;">
+        <img src="<%=blog.imgUrl%>" class="card-img-top" style="width: 20rem; height: 15rem;">
+        <div class="card-body ms-5" style="width: 50rem;">
+          <h5 class="card-title"><%=blog.title%></h5>
+          <p class="card-text red overflow-hidden"><%=blog.description%></p>
+          <p > <%=blog.createdAt.toString().slice(0,25)%></p>
+         
+        </div>
+      </div>
+    </a>
+    <%}%>
+    <%- include("./partial/script.ejs")%>
+    <script>
+      var inputbox = document.getElementById("search");
+      var findBtn = document.getElementById("search-btn");
+      var suggestionbox = document.getElementById("autocomplete");
+      var searchform = document.getElementById("search-form");
+      var input;
+      let result = [];
+
+      let suggestion =  '<%- JSON.stringify(blogs) %> '   ;
+      let blogs = suggestion.slice(1,-1);
+      let parseblogs =JSON.parse(suggestion);
+      
+
+      inputbox.onkeyup= (e)=>{
+        input = e.target.value;
+        if(input){
+
+          result = parseblogs.filter((blog)=>{
+            return blog.title.toLocaleLowerCase().includes(input.toLocaleLowerCase());
+          });
+          result= result.map((data)=>{
+            return data = '<li onclick=selectList(this)>' + data.title + '</li>'
+          })
+          
+        }
+        else{
+          result = [];
+        }
+        showSuggestion(result);
+
+      };
+
+      function selectList(list){
+          inputbox.value = list.textContent;
+          searchform.setAttribute("action",`/${list.textContent}`)
+          suggestionbox.innerHTML = null;
+      };
+      
+      function showSuggestion(list){
+
+        if(!list.length){
+          suggestionbox.innerHTML = null;
+        }
+        else{
+          suggestionbox.innerHTML = list.join('');
+        }
+      };
+      
+   
+    </script>
+  </body>
+</html>

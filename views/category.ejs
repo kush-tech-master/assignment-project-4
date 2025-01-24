@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+  <%- include("./partial/head.ejs")%>
+  <body>
+    <%- include("./partial/nav2.ejs")%>
+   
+
+        <%- include("./partial/leftmenu.ejs")%>
+
+        <table id="blog-table" class="mx-auto">
+            <thead>
+                <tr id="blog-head-row">
+                    <th class="head-data" >Name</th>
+                    <th class="head-data" >Actions</th>
+                   
+                </tr>
+            </thead>
+            <tbody>
+                <%for(blog of blogs){%>
+                <tr id="blog-body-row">
+                    
+                    <td class="body-data"><%=blog.category%></td>
+                    
+                    <td class="body-data"> <a href="/user/<%=blog.category%>/categories/delete"><i class="fa-regular fa-trash-can"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="/user/<%=blog.category%>/categories/edit"><i class="fa-regular fa-pen-to-square"></i></a></td>
+                </tr>
+                
+                <%}%>
+            </tbody>
+        </table>
+    
+    
+  
+    <%- include("./partial/script.ejs")%>
+   
+  </body>
+</html>

@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+  <%- include("./partial/head.ejs")%>
+  <body>
+    <%- include("./partial/nav.ejs")%>
+   
+
+        <%- include("./partial/leftmenu.ejs")%>
+    
+    
+    <%for(blog of blogs){%>
+      <a class="blog-a"  href="/<%=blog.title%>"> 
+      <div class=" d-flex mb-4  mx-auto align-items-center px-5" style="width: 80rem;">
+        <img src="<%=blog.imgUrl%>" class="card-img-top" style="width: 20rem; height: 15rem;">
+        <div class="card-body ms-5" style="width: 50rem;">
+          <h5 class="card-title"><%=blog.title%></h5>
+          <p class="card-text red overflow-hidden"><%=blog.description%></p>
+          <p > <%=blog.createdAt.toString().slice(0,25)%></p>
+         
+        </div>
+      </div>
+    </a>
+    <%}%>
+    <%- include("./partial/script.ejs")%>
+    <script>
+      var inputbox = document.getElementById("search");
+      var findBtn = document.getElementById("search-btn");
+      var suggestionbox = document.getElementById("autocomplete");
+      var searchform = document.getElementById("search-form");
+      var navul = document.getElementById("nav-ul");
+      var navdropdownbutton = document.getElementById("nav-dropdown-button");
+      var nav = document.getElementById("nav");
+      const body = document.body;
+      const checkbox = document.getElementById("checkbox");
+      var input;
+      let result = [];
+      let suggestion = ' <%- JSON.stringify(blogs) %> '   ;
+      let name = ' <%- JSON.stringify(name) %> ' ;
+      let blogs = suggestion.slice(1,-1);
+      let parseblogs =JSON.parse(suggestion);
+
+
+      
+
+      inputbox.onkeyup= (e)=>{
+        input = e.target.value;
+        if(input){
+
+          result = parseblogs.filter((blog)=>{
+            return blog.title.toLocaleLowerCase().includes(input.toLocaleLowerCase());
+          });
+          result= result.map((data)=>{
+            return data = '<li onclick=selectList(this)>' + data.title + '</li>'
+          })
+          
+        }
+        else{
+          result = [];
+        }
+        showSuggestion(result);
+
+      };
+
+      function selectList(list){
+          inputbox.value = list.textContent;
+          searchform.setAttribute("action",`/${list.textContent}`)
+          suggestionbox.innerHTML = null;
+      };
+      
+      function showSuggestion(list){
+
+        if(!list.length){
+          suggestionbox.innerHTML = null;
+        }
+        else{
+          suggestionbox.innerHTML = list.join('');
+        }
+      };
+      window.onload = function(){
+            
+          navul.innerHTML= " <li ><a href='/logout'>logout</a></li>";
+          navdropdownbutton.innerText =` ${name.slice(2,-2)} `;
+      }
+      checkbox.addEventListener("change", () => {
+            if (checkbox.checked) {
+                // Prevent scrolling
+                body.classList.add("no-scroll");
+            } else {
+                // Allow scrolling
+                body.classList.remove("no-scroll");
+            }
+        });
+   
+
+    </script>
+  </body>
+</html>

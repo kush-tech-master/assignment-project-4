@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+  <%- include("./partial/head.ejs")%>
+  <body>
+    <%- include("./partial/nav2.ejs")%>
+   
+
+       
+        <div class=" mt-5 mx-auto" style=" width: 40rem;">
+
+            <form method="post" action="" class="mx-auto">
+                <h1 class="mb-4" >Add New Category</h1>
+                
+                <div class="mb-3">
+                  <label for="category" class="form-label"><strong>Category Name</strong></label>
+                  <input type="text"  name="category" required style="border: 0.001rem solid rgb(113, 113, 113);" class=" form-control" id="category" >
+                 
+                </div>
+                
+                
+                <button type="submit" style="width: 6rem;" class="btn btn-primary">Submit</button>
+              </form>
+              <br>
+              <a href="/user"> <button  style="width: 6rem;" class="btn btn-primary">Cancel</button> </a>
+    
+    
+        </div>
+      
+      
+      
+      
+      
+      
+      
+      
+   
+  
+    <%- include("./partial/script.ejs")%>
+   
+  </body>
+</html>
